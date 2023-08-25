@@ -18,6 +18,7 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+define( 'FS_METHOD', 'direct' ); // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- Valid use case as we need it defined.
 
 define( 'WP_ROCKET_PAGE_SPIDER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WP_ROCKET_PAGE_SPIDER_URL', plugin_dir_url( __FILE__ ) );
@@ -32,3 +33,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 register_activation_hook( __FILE__, [ 'WP_ROCKET_PAGE_Spider_Db', 'build_table' ] );
 
+
+if ( ! wp_next_scheduled( 'crawl_hourly_event' ) ) {
+	wp_schedule_event( time(), 'hourly', 'crawl_hourly_event' );
+}
+
+add_action( 'crawl_hourly_event', [ 'WP_ROCKET_PAGE_Spider', 'crawl_page' ] );

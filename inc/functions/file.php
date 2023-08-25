@@ -1,13 +1,27 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-define( 'FS_METHOD', 'direct' );
-
 /**
- * Create_table
+ * Wp_rocket_page_spider_create_sitemap.
  *
+ * @param  mixed $urls list of urls.
  * @return void
  */
-function wp_rocket_page_spider_create_sitemap() {
+function wp_rocket_page_spider_create_sitemap( $urls ) {
+	global $wp_filesystem;
+	if ( empty( $wp_filesystem ) ) {
+		require_once ABSPATH . '/wp-admin/includes/file.php';
+		WP_Filesystem();
+	}
+
+	$sitemap_content = '';
+	if ( $urls ) {
+		foreach ( $urls as $url ) {
+			$sitemap_content .= "<li><a href='{$url}'>{$url}</a></li>";
+		}
+	}
+
+	$file_path = ABSPATH . 'sitemap.html';
+	$wp_filesystem->put_contents( $file_path, $sitemap_content, 0644 );
 }
 
 

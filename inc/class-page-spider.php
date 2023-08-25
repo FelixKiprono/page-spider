@@ -6,26 +6,33 @@ use GuzzleHttp\Client;
 
 class WP_ROCKET_PAGE_Spider {
 
+
 	/**
-	 * Crawl
+	 * Crawl_page
 	 *
 	 * @return void
 	 */
-	public static function crawl() {
+	public static function crawl_page() {
+		$homepage_url = home_url();
+		try {
+			$client   = new \GuzzleHttp\Client();
+			$response = $client->get( $homepage_url );
+			$html     = (string) $response->getBody();
 
-		$client   = new \GuzzleHttp\Client();
-		$response = $client->get( home_url() );
-		$html     = (string) $response->getBody();
+			wp_rocket_page_spider_create_homepage( $html );
 
-		wp_rocket_page_spider_create_homepage( $html );
-
-		$crawler = new Crawler( $html );
-		$links   = $crawler->filter( 'a' );
-
-		WP_ROCKET_PAGE_Spider_Db::add_result( home_url(), $links );
-
-		foreach ( $links as $link ) {
-			$saved_link = $link->getAttribute( 'href' );
+			$crawler       = new Crawler( $html );
+			$links         = $crawler->filter( 'a' );
+			$crawled_links = [];
+			foreach ( $links as $link ) {
+				if ( filter_var( $link->getAttribute( 'href' ), FILTER_VALIDATE_URL ) ) {
+					$crawled_links[] = $link->getAttribute( 'href' );
+				}
+			}
+			WP_ROCKET_PAGE_Spider_Db::add_result( $homepage_url, $crawled_links );
+			wp_rocket_page_spider_create_sitemap( $crawled_links );
+		} catch ( Exception $e ) {
+			echo esc_html( '<p>Failed to crawl : ' . $homepage_url . $e->getMessage() . '</p>' );
 		}
 	}
 

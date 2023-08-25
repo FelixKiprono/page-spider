@@ -16,10 +16,8 @@ class WP_ROCKET_PAGE_Spider_Db {
 		$sql = "CREATE TABLE $table_name (
 			id INT NOT NULL AUTO_INCREMENT,
 			PRIMARY KEY (id),
-			crawled_url VARCHAR(255) NOT NULL,
-			hyperlinks VARCHAR(255) NOT NULL,
-			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-			metadata VARCHAR(255) NULL
+			link VARCHAR(255) NOT NULL,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
 		) $charset_collate;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -36,23 +34,21 @@ class WP_ROCKET_PAGE_Spider_Db {
 	public static function add_result( $url, $result ) {
 
 		self::delete_all_savedlinks();
-
-		$all_hyper_links = [];
-		foreach ( $result as $link ) {
-			$all_hyper_links[] = $link->getAttribute( 'href' );
-		}
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'page_spider';
-		$wpdb->insert(
-			$table_name,
-			[
-				'crawled_url' => $url,
-				'hyperlinks'  => wp_json_encode( $all_hyper_links ),
-				'metadata'    => ' ',
-			]
-		); // db call ok.
+		$all_hyper_links = [];
+		$table_name      = $wpdb->prefix . 'page_spider';
+		foreach ( $result as $link ) {
+
+			$wpdb->insert(
+				$table_name,
+				[
+					'link' => $link,
+				]
+			); // db call ok.
+		}
 	}
 
+	//@codingStandardsIgnoreStart
 	/**
 	 * Get_savedlinks
 	 *
@@ -61,8 +57,7 @@ class WP_ROCKET_PAGE_Spider_Db {
 	public static function get_savedlinks() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'page_spider';
-
-		return $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %s', $table_name ) ); // db call ok; no-cache ok.
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name ",  ) ); // db call ok; no-cache ok.
 	}
 
 	/**
@@ -73,9 +68,8 @@ class WP_ROCKET_PAGE_Spider_Db {
 	public static function delete_all_savedlinks() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'page_spider';
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE id>%d', $table_nam, 1 ) ); // db call ok; no-cache ok.
+		$wpdb->query( "DELETE FROM $table_name WHERE 1" ); // db call ok; no-cache ok.
 	}
-
-
+	//@codingStandardsIgnoreEnd
 
 }
