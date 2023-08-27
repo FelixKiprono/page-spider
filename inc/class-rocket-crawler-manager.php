@@ -29,7 +29,7 @@ class WP_ROCKET_Crawler_Manager {
 					$crawled_links[] = $link->getAttribute( 'href' );
 				}
 			}
-			WP_ROCKET_Crawler_Db::add_result( $homepage_url, $crawled_links );
+			WP_ROCKET_Crawler_Db::add_result( $crawled_links );
 			wp_rocket_page_spider_create_sitemap( $crawled_links );
 		} catch ( Exception $e ) {
 			echo esc_html( '<p>Failed to crawl : ' . $homepage_url . $e->getMessage() . '</p>' );

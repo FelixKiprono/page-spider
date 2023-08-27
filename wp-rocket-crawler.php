@@ -14,7 +14,7 @@
  * Text Domain: wp_rocket_crawler
  * Domain Path: languages
  *
- * Copyright 2023 Spider
+ * Copyright 2023 WP Media
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -38,4 +38,4 @@ if ( ! wp_next_scheduled( 'crawl_hourly_event' ) ) {
 	wp_schedule_event( time(), 'hourly', 'crawl_hourly_event' );
 }
 
-add_action( 'crawl_hourly_event', [ 'WP_ROCKET_Crawler', 'crawl_page' ] );
+add_action( 'crawl_hourly_event', [ 'WP_ROCKET_Crawler_Manager', 'crawl_page' ] );
