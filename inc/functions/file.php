@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
  * @param  mixed $urls list of urls.
  * @return void
  */
-function wp_rocket_page_spider_create_sitemap( $urls ) {
+function wp_rocket_create_sitemap( $urls ) {
 	global $wp_filesystem;
 	if ( empty( $wp_filesystem ) ) {
 		require_once ABSPATH . '/wp-admin/includes/file.php';
@@ -31,7 +31,7 @@ function wp_rocket_page_spider_create_sitemap( $urls ) {
  * @param  mixed $content html content.
  * @return void
  */
-function wp_rocket_page_spider_create_homepage( $content ) {
+function wp_rocket_create_homepage( $content ) {
 
 	global $wp_filesystem;
 

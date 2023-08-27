@@ -5,8 +5,6 @@ use GuzzleHttp\Client;
 
 
 class WP_ROCKET_Crawler_Manager {
-
-
 	/**
 	 * Crawl page nb: for now we are only crawling homepage.
 	 *
@@ -19,7 +17,7 @@ class WP_ROCKET_Crawler_Manager {
 			$response = $client->get( $homepage_url );
 			$html     = (string) $response->getBody();
 
-			wp_rocket_page_spider_create_homepage( $html );
+			wp_rocket_create_homepage( $html );
 
 			$crawler       = new Crawler( $html );
 			$links         = $crawler->filter( 'a' );
@@ -30,7 +28,11 @@ class WP_ROCKET_Crawler_Manager {
 				}
 			}
 			WP_ROCKET_Crawler_Db::add_result( $crawled_links );
-			wp_rocket_page_spider_create_sitemap( $crawled_links );
+			wp_rocket_create_sitemap( $crawled_links );
+
+			/* set the task to run hourly. */
+			wp_rocket_crawl_every_hour();
+
 		} catch ( Exception $e ) {
 			echo esc_html( '<p>Failed to crawl : ' . $homepage_url . $e->getMessage() . '</p>' );
 		}
