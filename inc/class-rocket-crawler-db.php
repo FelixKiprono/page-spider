@@ -1,9 +1,12 @@
 <?php
 
-class WP_ROCKET_PAGE_Spider_Db {
+/**
+ * WP_ROCKET_Crawler_Db.
+ */
+class WP_ROCKET_Crawler_Db {
 
 	/**
-	 * Build_table
+	 * Build table for our links results.
 	 *
 	 * @return void
 	 */
@@ -25,24 +28,32 @@ class WP_ROCKET_PAGE_Spider_Db {
 	}
 
 	/**
-	 * Add_result
+	 * Add result
 	 *
-	 * @param  mixed $url crawled link.
-	 * @param  mixed $result found hyperlinks.
+	 * @param  mixed $hyperlinks found hyperlinks.
 	 * @return void
 	 */
-	public static function add_result( $url, $result ) {
+	public static function add_result( $hyperlinks ) {
 
-		self::delete_all_savedlinks();
+		self::delete_last_saved_links();
 		global $wpdb;
 		$all_hyper_links = [];
 		$table_name      = $wpdb->prefix . 'page_spider';
-		foreach ( $result as $link ) {
+		if ( is_array( $hyperlinks ) ) {
 
+			foreach ( $hyperlinks as $hyperlink ) {
+				$wpdb->insert(
+					$table_name,
+					[
+						'link' => $hyperlink,
+					]
+				); // db call ok.
+			}
+		} else {
 			$wpdb->insert(
 				$table_name,
 				[
-					'link' => $link,
+					'link' => $hyperlinks,
 				]
 			); // db call ok.
 		}
@@ -50,22 +61,22 @@ class WP_ROCKET_PAGE_Spider_Db {
 
 	//@codingStandardsIgnoreStart
 	/**
-	 * Get_savedlinks
+	 * Get saved links/results
 	 *
 	 * @return array|object|stdClass[]|null
 	 */
-	public static function get_savedlinks() {
+	public static function get_saved_links() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'page_spider';
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name ",  ) ); // db call ok; no-cache ok.
+		return $wpdb->get_results( "SELECT * FROM $table_name " ); // db call ok; no-cache ok.
 	}
 
 	/**
-	 * Delete_all_savedlinks
+	 * Delete all savedlinks
 	 *
 	 * @return void
 	 */
-	public static function delete_all_savedlinks() {
+	public static function delete_last_saved_links() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'page_spider';
 		$wpdb->query( "DELETE FROM $table_name WHERE 1" ); // db call ok; no-cache ok.

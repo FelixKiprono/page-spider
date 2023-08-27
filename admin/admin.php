@@ -23,7 +23,7 @@ function wp_rocket_spider_page_content() {
 			die( 'Nonce verification failed!' );
 		}
 
-		WP_ROCKET_PAGE_Spider::crawl_page();
+		WP_ROCKET_Crawler_Manager::crawl_page();
 
 		echo '<p>Finished crawling homepage.</p>';
 	}
@@ -33,7 +33,7 @@ function wp_rocket_spider_page_content() {
             <input type="submit" name="crawl" value="' . esc_html__( 'Start Crawl', 'rocket' ) . '">'
 		. $nonce_field // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		. '</form></p>';
-	$links = WP_ROCKET_PAGE_Spider_Db::get_savedlinks();
+	$links = WP_ROCKET_PAGE_Spider_Db::get_saved_links();
 	if ( ! empty( $links ) ) {
 		echo '</br><p>' . esc_html__( 'View Sitemap List', 'rocket' ) . " <a href='../sitemap.html' target='_blank'>" . esc_html__( 'sitemap.html', 'rocket' ) . '</a>';
 		echo '</br>' . esc_html__( 'View Sitemap Detailed', 'rocket' ) . " <a href='../sitemap.html' target='_blank'>" . esc_html__( 'sitemap.html', 'rocket' ) . '</a></p>';
