@@ -20,7 +20,7 @@ function wp_rocket_spider_page_content() {
 	if ( isset( $_POST['crawl'] ) ) {
 		$nonce = isset( $_POST['spider_crawler_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['spider_crawler_nonce'] ) ) : '';
 		if ( ! wp_verify_nonce( $nonce, 'spider_crawler_action' ) ) {
-			die( 'Nonce verification failed!' );
+			die( 'Sorry, Nonce verification failed!' );
 		}
 
 		WP_ROCKET_Crawler_Manager::crawl_page();
@@ -40,14 +40,10 @@ function wp_rocket_spider_page_content() {
 		echo '<p>' . esc_html__( 'Last Home page content snapshot. View', 'rocket' ) . " <a href='../homepage.html' target='_blank'>" . esc_html__( 'homepage.html', 'rocket' ) . '</a></p>';
 		echo '<h3>' . count( $links ) . esc_html__( ' Found Results', 'rocket' ) . ':</h3>';
 		echo '</ul>';
-		echo '<table style="border-collapse: collapse;width: 100%;">';
-		echo '<tr style="padding: 8px;
-		text-align: left;
-		border-bottom: 1px solid #ddd;"><th >Link</th><th>Modification Date</th></tr>';
+		echo '<table>';
+		echo '<tr><td>Link</td><td>Modification Date</td></tr>';
 		foreach ( $links as $link ) {
-			echo '<tr style="padding: 8px;
-			text-align: left;
-			border-bottom: 1px solid #ddd;">';
+			echo '<tr>';
 			echo '<td>' . esc_html( $link->link ) . '</td>';
 			echo '<td>';
 				echo esc_html( $link->created_at ) . '</br>';

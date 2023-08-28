@@ -8,7 +8,7 @@
  * Requires PHP: 7.3
  * Code Name: Toulouse
  * Author: Felix Kiprono
- * Author URI: https://felixkiprono.me
+ * Author URI:
  * Licence: GPLv2 or later
  *
  * Text Domain: wp_rocket_crawler
@@ -20,14 +20,15 @@
 defined( 'ABSPATH' ) || exit;
 define( 'FS_METHOD', 'direct' ); // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- Valid use case as we need it defined.
 
+define( 'WP_ROCKET_CRAWLER_VERSION', '0.0.1' );
 define( 'WP_ROCKET_CRAWLER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WP_ROCKET_CRAWLER_URL', plugin_dir_url( __FILE__ ) );
-
 
 require_once WP_ROCKET_CRAWLER_PATH . 'admin/admin.php';
 require_once WP_ROCKET_CRAWLER_PATH . 'inc/class-rocket-crawler-db.php';
 require_once WP_ROCKET_CRAWLER_PATH . 'inc/class-rocket-crawler-manager.php';
 require_once WP_ROCKET_CRAWLER_PATH . 'inc/functions/file.php';
+require_once WP_ROCKET_CRAWLER_PATH . 'inc/functions/cron.php';
 
 require_once __DIR__ . '/vendor/autoload.php';
 
