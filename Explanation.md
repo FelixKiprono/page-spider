@@ -18,6 +18,9 @@ The website has been facing a downward trajectory of SEO Rankings, the web admin
 **Data/Results**
  - Storing of the information in both the file system as html page for sitemap data as  `sitemap.html` and snapshot to `homepage.html`
  - Storing the found links on a table for later use
+ - page cache stored results for easier fetching NB:this feature only helps in cases when user does alot of refreshes on the admin page in this case we dont need to query database all the time
+ we cache only for 600 seconds in this case.
+
 
 **View/Visualization**
  - Present the saved results of links to the admin in form of a list structure
@@ -59,6 +62,11 @@ my approach was to gather the input requirements to help understand admin expect
 
 **Thoughts on the solution**
 Our simplicity of our solution has enabled the admin to perfom the tedious task faster with better results, and also the solution has left a window of scalability in future incase of more features.
+Things would want to improve on the solution for scalability are 
+`caching` - ability to cache results for faster search in the case where we would have many links
+`dynamic crawling` - being able to provide admin with ways to crawl anywhere on the site not limited to homepage
+
+
 
 **Why i choosed this Direction**
  - Deadline : ability to deliver the application on time

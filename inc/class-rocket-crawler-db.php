@@ -69,7 +69,13 @@ class WP_ROCKET_Crawler_Db {
 	public static function get_saved_links() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'page_spider';
-		return $wpdb->get_results( "SELECT * FROM $table_name " ); // db call ok; no-cache ok.
+		$cache_key = $table_name. '_cache_results';
+		$cached_results  = wp_cache_get( $cache_key );
+		if( false === $cached_results ) {
+			$cached_results =  $wpdb->get_results( "SELECT * FROM $table_name " ); // db call ok; no-cache ok.
+			wp_cache_set( $cache_key, $cached_results, '', 600 );
+		}
+		return $cached_results;
 	}
 
 	/**
