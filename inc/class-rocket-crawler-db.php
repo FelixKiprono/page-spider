@@ -1,7 +1,8 @@
 <?php
 
 /**
- * WP_ROCKET_Crawler_Db.
+ * WP_ROCKET_Crawler_Db class file
+ * This class deals with database operations.
  */
 class WP_ROCKET_Crawler_Db {
 
