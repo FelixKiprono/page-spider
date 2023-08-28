@@ -6,7 +6,8 @@ use GuzzleHttp\Client;
 
 class WP_ROCKET_Crawler_Manager {
 	/**
-	 * Crawl page nb: for now we are only crawling homepage.
+	 * Crawl class file
+	 * Crawl task and operations NB:for now we are only crawling homepage.
 	 *
 	 * @return void
 	 */
